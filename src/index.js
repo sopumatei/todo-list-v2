@@ -1,6 +1,9 @@
 import { loadHeader } from './modules/Header'
 import { loadMain } from './modules/Main'
 import { loadFooter } from './modules/Footer'
+import { activateHeader } from './modules/Header_Manipulator'
+
+import './style.css'
 
 const loadWebsite = () => {
     document.body.appendChild(loadHeader());
@@ -9,3 +12,4 @@ const loadWebsite = () => {
 }
 
 loadWebsite();
+activateHeader();

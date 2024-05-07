@@ -4,9 +4,9 @@ export const loadFooter = () => {
     footer.id = 'footer';
 
     // Creating the text inside the footer
-    const footerText = document.createElement('h4');
+    const footerText = document.createElement('p');
     const date = new Date;
-    footerText.textContent = `Copyright © ${date.getFullYear()} sopumatei`
+    footerText.textContent = `Copyright © 2024-${date.getFullYear()} sopumatei`
     footer.appendChild(footerText);
 
     return footer;
