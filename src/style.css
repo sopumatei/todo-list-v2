@@ -256,6 +256,96 @@ body {
     background-color: var(--hover-bg-color);
 }
 
+/* ADD TASK  */
+#add-task-container {
+    z-index: 3;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#add-task-frame {
+    z-index: 4;
+    position: absolute;
+    background-color: var(--secondary-light);
+
+    padding: 1rem;
+    border-radius: var(--btn-border-radius);
+
+    width: min(350px, 80vw);
+    min-width: 250px;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+
+#input-title {
+    width: 100%;
+    font-size: inherit;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--btn-border-radius);
+    color: var(--primary-dark);
+}
+
+#input-description {
+    font-size: inherit;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--btn-border-radius);
+    color: var(--primary-dark);
+    width: 100%;
+    height: 20vh;
+    min-height: 10rem;
+    resize: none;
+}
+
+#date-container {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#input-date {
+    font-size: 1rem;
+    border-radius: var(--btn-border-radius);
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+#add-task-btn-container {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-task-btn {
+    font-size: inherit;
+    width: 100%;
+    padding: 0.5rem 0;
+    border: none;
+    border-radius: var(--btn-border-radius);
+    background-color:#fff;
+
+    transition: all 0.2s ease-in-out;
+}
+
+.add-task-btn:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 /* Media queries */
 @media screen and (max-width: 650px) {
     #project-preview {

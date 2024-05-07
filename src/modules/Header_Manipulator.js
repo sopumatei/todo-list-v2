@@ -1,7 +1,7 @@
 export const activateHeader = () => {
     const menuBtn = document.getElementById('nav-btn');
     const mainNav = document.getElementById('main-nav');
-
+ 
     menuBtn.addEventListener('click', () => {
         if(menuBtn.classList.contains('active')) {
             menuBtn.classList.remove('active');
