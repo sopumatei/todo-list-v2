@@ -4,7 +4,7 @@ export const loadTaskFrame = () => {
     container.id = 'add-task-container';
 
     // Creating the frame
-    const frame = document.createElement('form');
+    const frame = document.createElement('div');
     frame.id = 'add-task-frame';
 
     // Creating the title

@@ -232,10 +232,57 @@ body {
     margin: 0 auto;
 }
 
-#tasks-list {
-    list-style: none;
+#project-name {
+    margin-bottom: 1rem;
 }
 
+#tasks-list {
+    list-style: none;
+
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.5rem;
+
+    margin-bottom: 1rem;
+}
+
+.task {
+    color: var(--primary-light);
+
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 1rem;
+
+    background-color: var(--secondary-dark);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: var(--btn-border-radius);
+}
+
+.task-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-flow: row nowrap;
+}
+
+.task-header button {
+    width: 35px;
+    height: 35px;
+}
+
+.task-header button:hover {
+    cursor: pointer;
+}
+
+.task h2 {
+    margin-bottom: 0.5rem;
+}
+
+.task h4 {
+    text-align: right;
+}
+ 
 #add-task-btn {
     text-align: left;
     width: 100%;
@@ -267,6 +314,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.2s ease-in-out;
 }
 
 #add-task-frame {
@@ -285,6 +336,9 @@ body {
     justify-content: space-around;
     align-items: center;
     gap: 1rem;
+
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
 }
 
 #input-title {
@@ -297,6 +351,7 @@ body {
 }
 
 #input-description {
+    font-family: inherit;
     font-size: inherit;
     border: none;
     padding: 0.5rem 1rem;
