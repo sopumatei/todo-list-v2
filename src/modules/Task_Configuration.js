@@ -1,5 +1,21 @@
-import {Task, Project, InboxProject, TodayProject, WeekProject, currentProject, loadTasks} from '../index'
+import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, currentProject, loadTasks} from '../index'
 import closeImg from '../img/close.png'
+
+const isDateInThisWeek = (date) => {
+    const todayObj = new Date();
+    const todayDate = todayObj.getDate();
+    const todayDay = todayObj.getDay();
+  
+    // get first date of week
+    const firstDayOfWeek = new Date(todayObj.setDate(todayDate - todayDay));
+  
+    // get last date of week
+    const lastDayOfWeek = new Date(firstDayOfWeek);
+    lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+  
+    // if date is equal or within the first and last dates of the week
+    return date >= firstDayOfWeek && date <= lastDayOfWeek;
+}
 
 export const taskConfig = () => {
     const addTaskBtn = document.getElementById('add-task-btn');
@@ -121,15 +137,19 @@ export const taskConfig = () => {
 
                 if(currentProject === "Inbox") {
                     InboxProject.addTask(task);
-                    console.log(InboxProject);
-                } else if(currentProject === "Today") {
-                    InboxProject.addTask(task);
-                    TodayProject.addTask(task);
-                    console.log(TodayProject);
-                } else if(currentProject === "Week") {
-                    InboxProject.addTask(task);
-                    WeekProject.addTask(task);
-                    console.log(WeekProject);
+
+                    const todayDate = new Date();
+                    const compareDate = new Date(inputDate.value);
+
+                    if(todayDate.setHours(0,0,0,0) == compareDate.setHours(0,0,0,0)) {
+                        TodayProject.addTask(task);
+                    }
+
+                    if(isDateInThisWeek(compareDate)) {
+                        WeekProject.addTask(task);
+                    }
+
+                    console.log(InboxProject, TodayProject, WeekProject);
                 } else {
                     InboxProject.addTask(task);
                 }

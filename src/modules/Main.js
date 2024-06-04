@@ -4,6 +4,8 @@ import thisWeekUrl from '../img/this_week.png'
 import projectUrl from '../img/to-do-list.png'
 import closeUrl from '../img/close.png' 
 
+import { currentProject, Projects, InboxProject, TodayProject, WeekProject, loadTasks } from '..'
+
 export const loadMain = () => {
     // Creating the main element
     const main = document.createElement('main');
@@ -22,6 +24,25 @@ export const loadMain = () => {
     const inbox = document.createElement('li');
     inbox.classList.add('active');
     inbox.id = 'inbox';
+
+    inbox.addEventListener('click', () => {
+        if(!inbox.classList.contains('active')) {
+            // currentProject = "Inbox";
+            document.getElementById('project-name').textContent = "Inbox";
+            document.getElementById('add-task-btn').style.display = 'Block';
+            inbox.classList.add('active');
+
+            const today = document.getElementById('today');
+            today.classList.remove('active');
+
+            const thisWeek = document.getElementById('this-week');
+            thisWeek.classList.remove('active');
+
+            // Loading the tasks
+            loadTasks(InboxProject);
+        } 
+    })
+
     const inboxImg = document.createElement('img');
     inboxImg.src = inboxUrl;
     inbox.appendChild(inboxImg);
@@ -32,6 +53,24 @@ export const loadMain = () => {
 
     const today = document.createElement('li');
     today.id = 'today';
+
+    today.addEventListener('click', () => {
+        if(!today.classList.contains('active')) {
+            // currentProject = "Today";
+            document.getElementById('project-name').textContent = "Today";
+            document.getElementById('add-task-btn').style.display = 'none';
+            today.classList.add('active');
+
+            inbox.classList.remove('active');
+
+            const thisWeek = document.getElementById('this-week');
+            thisWeek.classList.remove('active');
+
+            // Loading the tasks
+            loadTasks(TodayProject);
+        } 
+    })
+
     const todayImg = document.createElement('img');
     todayImg.src = todayUrl;
     today.appendChild(todayImg);
@@ -42,6 +81,23 @@ export const loadMain = () => {
 
     const thisWeek = document.createElement('li');
     thisWeek.id = 'this-week';
+
+    thisWeek.addEventListener('click', () => {
+        if(!thisWeek.classList.contains('active')) {
+            // currentProject = "Week";
+            document.getElementById('project-name').textContent = "This Week";
+            document.getElementById('add-task-btn').style.display = 'none';
+            thisWeek.classList.add('active');
+
+            today.classList.remove('active');
+
+            inbox.classList.remove('active');
+
+            // Loading the tasks
+            loadTasks(WeekProject);
+        } 
+    })
+
     const thisWeekImg = document.createElement('img');
     thisWeekImg.src = thisWeekUrl;
     thisWeek.appendChild(thisWeekImg);

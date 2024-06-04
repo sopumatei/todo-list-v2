@@ -39,6 +39,7 @@ export class Project {
 export let InboxProject = new Project("Inbox", []);
 export let TodayProject = new Project("Today", []);
 export let WeekProject = new Project("Week", []);
+export let Projects = [];
 
 taskConfig();
 
@@ -64,21 +65,7 @@ export const loadTasks = (project) => {
         taskHeader.appendChild(removeBtn);
 
         removeBtn.addEventListener('click', () => {
-            if(currentProject === "Inbox") {
-                InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== task.title);
-                // console.log(InboxProject);
-                loadTasks(InboxProject);
-            } else if(currentProject === "Today") {
-                InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                loadTasks(TodayProject);
-            } else if(currentProject === "Week") {
-                InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                loadTasks(WeekProject);
-            } else {
-                    InboxProject.addTask(task);
-            }
+            project.tasks = project.tasks.filter((task) => task.title !== taskTitle.textContent);
         })
 
         taskElement.appendChild(taskHeader);
