@@ -4,6 +4,7 @@ import { loadFooter } from './modules/Footer'
 import { loadTaskFrame } from './modules/Add_Task_Frame'
 import { activateHeader } from './modules/Header_Manipulator'
 import { taskConfig } from './modules/Task_Configuration'
+import { isDateInThisWeek } from './modules/Task_Configuration'
 
 import './style.css'
 
@@ -66,6 +67,18 @@ export const loadTasks = (project) => {
 
         removeBtn.addEventListener('click', () => {
             project.tasks = project.tasks.filter((task) => task.title !== taskTitle.textContent);
+
+            const todayDate = new Date();
+            const compareDate = new Date(task.date);
+
+            if(todayDate.setHours(0,0,0,0) == compareDate.setHours(0,0,0,0)) {
+                TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+            }
+
+            if(isDateInThisWeek(compareDate)) {
+                WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+            }
+
             loadTasks(project);
         })
 

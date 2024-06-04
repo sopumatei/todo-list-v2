@@ -1,7 +1,7 @@
 import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, currentProject, loadTasks} from '../index'
 import closeImg from '../img/close.png'
 
-const isDateInThisWeek = (date) => {
+export const isDateInThisWeek = (date) => {
     const todayObj = new Date();
     const todayDate = todayObj.getDate();
     const todayDay = todayObj.getDay();
