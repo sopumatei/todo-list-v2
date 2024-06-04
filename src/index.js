@@ -66,6 +66,7 @@ export const loadTasks = (project) => {
 
         removeBtn.addEventListener('click', () => {
             project.tasks = project.tasks.filter((task) => task.title !== taskTitle.textContent);
+            loadTasks(project);
         })
 
         taskElement.appendChild(taskHeader);
