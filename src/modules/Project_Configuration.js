@@ -27,7 +27,7 @@ export const projectConfig = () => {
     
     let canAddProject = (prjName) => {
         for(let i = 0; i < Projects.length; ++i) {
-            if(Projects[i].name === prjName) {
+            if(Projects[i].name.toLowerCase() === prjName.toLowerCase()) {
                 return false;
             }
         }

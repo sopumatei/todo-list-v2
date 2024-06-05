@@ -113,7 +113,7 @@ export const taskConfig = () => {
 
     let canAddTask = (tskName) => {
         for(let i = 0; i < InboxProject.tasks.length; ++i) {
-            if(InboxProject.tasks[i].title === tskName) {
+            if(InboxProject.tasks[i].title.toLowerCase() === tskName.toLowerCase()) {
                 return false;
             }
         }
