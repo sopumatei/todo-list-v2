@@ -25,6 +25,16 @@ export const projectConfig = () => {
         }, 300);
     }) 
     
+    let canAddProject = (prjName) => {
+        for(let i = 0; i < Projects.length; ++i) {
+            if(Projects[i].name === prjName) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     let canClick = true;
     submitBtn.addEventListener('click', () => {
         if(canClick) {
@@ -32,7 +42,16 @@ export const projectConfig = () => {
             let check1 = false;
 
             if(projectTitle.value !== '') {
-                check1 = true;
+                if(canAddProject(projectTitle.value)) {
+                    check1 = true;
+                } else {
+                    projectTitle.value = 'ALREADY EXISTS';
+                    canClick = false;
+                    setTimeout(() => {
+                        canClick = true;
+                        projectTitle.value = '';
+                    }, 500);
+                }
             } else {
                 projectTitle.value = 'MISSING TITLE';
                 canClick = false;
