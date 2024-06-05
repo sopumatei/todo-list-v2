@@ -1,4 +1,4 @@
-import { Projects, Project } from "..";
+import { Projects, Project, updateStorage } from "..";
 import { loadProjects } from "./Main";
 
 export const projectConfig = () => {
@@ -45,6 +45,7 @@ export const projectConfig = () => {
             if(check1) {
                 let newProject = new Project(projectTitle.value, []);
                 Projects.push(newProject);
+                updateStorage();
                 projectTitle.value = ''; 
 
                 loadProjects();

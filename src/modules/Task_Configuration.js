@@ -1,4 +1,4 @@
-import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, getCurrentProject, setCurrentProject, loadTasks} from '../index'
+import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, getCurrentProject, setCurrentProject, loadTasks, updateStorage} from '../index'
 import closeImg from '../img/close.png'
 
 const createTask = (project) => {
@@ -33,6 +33,7 @@ const createTask = (project) => {
             Projects[i].tasks = Projects[i].tasks.filter((task) => task.title !== taskTitle.textContent);
         }
 
+        updateStorage();
         loadTasks(project);
     })
 
@@ -63,6 +64,7 @@ const createTask = (project) => {
     if(isDateInThisWeek(compareDate)) {
         WeekProject.addTask(task);
     }
+    updateStorage();
 }
 
 export const isDateInThisWeek = (date) => {

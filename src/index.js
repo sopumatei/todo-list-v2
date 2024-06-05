@@ -39,6 +39,34 @@ export const setCurrentProject = (project) => {
     currentProject = project;
 };
 
+// Local storage
+const loadStorage = () => {
+    if(localStorage.getItem('Inbox')) {
+        InboxProject.tasks = JSON.parse(localStorage.getItem('Inbox'));
+    }
+
+    if(localStorage.getItem('Today')) {
+        TodayProject.tasks = JSON.parse(localStorage.getItem('Today'));
+    }
+
+    if(localStorage.getItem('Week')) {
+        WeekProject.tasks = JSON.parse(localStorage.getItem('Week'));
+    }
+
+    if(localStorage.getItem('Week')) {
+        Projects = JSON.parse(localStorage.getItem('Projects'));
+    }
+}
+
+loadStorage();
+
+export const updateStorage = () => {
+    localStorage.setItem('Inbox', JSON.stringify(InboxProject.tasks));
+    localStorage.setItem('Today', JSON.stringify(TodayProject.tasks));
+    localStorage.setItem('Week', JSON.stringify(WeekProject.tasks));
+    localStorage.setItem('Projects', JSON.stringify(Projects));
+}
+
 const loadWebsite = () => {
     document.body.appendChild(loadHeader());
     document.body.appendChild(loadMain());
@@ -83,7 +111,8 @@ export const loadTasks = (project) => {
             for(let i = 0; i < Projects.length; ++i) {
                 Projects[i].tasks = Projects[i].tasks.filter((task) => task.title !== taskTitle.textContent);
             }
-    
+            
+            updateStorage();
             loadTasks(project);
         })
 

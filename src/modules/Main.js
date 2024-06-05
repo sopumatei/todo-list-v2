@@ -4,7 +4,7 @@ import thisWeekUrl from '../img/this_week.png'
 import projectUrl from '../img/to-do-list.png'
 import closeUrl from '../img/close.png' 
 
-import { getCurrentProject, setCurrentProject, Project, Projects, InboxProject, TodayProject, WeekProject, loadTasks } from '..'
+import { getCurrentProject, setCurrentProject, Project, Projects, InboxProject, TodayProject, WeekProject, loadTasks, updateStorage } from '..'
 
 export const loadProjects = () => {
     const projectsContainer = document.getElementById('projects-container');
@@ -35,6 +35,7 @@ export const loadProjects = () => {
             canDelete = true;
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
+                console.log('deleteing a project');
                 for(let i  = 0; i < project.tasks.length; ++i) {
                     const currentTask = project.tasks[i];
                     InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== currentTask.title);
@@ -52,6 +53,7 @@ export const loadProjects = () => {
                 }
 
                 Projects.splice(index, 1); // Remove the project
+                updateStorage();
             }
 
             loadProjects(); 
@@ -190,11 +192,11 @@ export const loadMain = () => {
     projects.appendChild(projectsContainer);
 
     // Loading projects
-    let Gym = new Project("Gym", []);
+    /* let Gym = new Project("Gym", []);
     let Home = new Project("Home", []);
     Projects.push(Gym);
     Projects.push(Home);
-    console.log(Projects);
+    console.log(Projects); */
 
     Projects.forEach((project) => {
         const projectExample = document.createElement('li');
@@ -221,6 +223,7 @@ export const loadMain = () => {
             canDelete = true;
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
+                console.log('deleteing a project');
                 for(let i  = 0; i < project.tasks.length; ++i) {
                     const currentTask = project.tasks[i];
                     InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== currentTask.title);
@@ -237,6 +240,7 @@ export const loadMain = () => {
                     loadTasks(InboxProject);
                 }
                 Projects.splice(index, 1); // Remove the project
+                updateStorage();
             }
             loadProjects(); 
         });
@@ -285,6 +289,48 @@ export const loadMain = () => {
     projectPreview.appendChild(addTaskBtn);
 
     main.appendChild(projectPreview);
+
+    // Loading the tasks
+    InboxProject.tasks.forEach((task) => {
+        const taskElement = document.createElement('li');
+        taskElement.classList.add('task');
+                
+        const taskHeader = document.createElement('div');
+        taskHeader.classList.add('task-header');
+
+        const taskTitle = document.createElement('h2');
+        taskTitle.textContent = task.title;
+        taskHeader.appendChild(taskTitle);
+
+        const removeBtn = document.createElement('button');
+        taskHeader.appendChild(removeBtn);
+
+        removeBtn.addEventListener('click', () => {
+            //console.log("Marime proiecte: " + Projects.length);
+            InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+            TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+            WeekProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+            
+            for(let i = 0; i < Projects.length; ++i) {
+                Projects[i].tasks = Projects[i].tasks.filter((task) => task.title !== taskTitle.textContent);
+            }
+            
+            updateStorage();
+            loadTasks(InboxProject);
+        })
+
+        taskElement.appendChild(taskHeader);
+
+        const taskDescription = document.createElement('p');
+        taskDescription.textContent = task.description;
+        taskElement.appendChild(taskDescription);
+
+        const taskDate = document.createElement('h4');
+        taskDate.textContent = task.date;
+        taskElement.appendChild(taskDate);
+
+        tasksList.appendChild(taskElement);
+    });
 
     // activateProject();
 
