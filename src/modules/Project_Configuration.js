@@ -1,3 +1,6 @@
+import { Projects, Project } from "..";
+import { loadProjects } from "./Main";
+
 export const projectConfig = () => {
     const addProjectBtn = document.getElementById('create-project-btn');
     const submitBtn = document.getElementById('project-submit-btn');
@@ -40,7 +43,11 @@ export const projectConfig = () => {
             }
 
             if(check1) {
+                let newProject = new Project(projectTitle.value, []);
+                Projects.push(newProject);
                 projectTitle.value = ''; 
+
+                loadProjects();
 
                 addProjectFrame.style.transform = 'scale(0)';
                 addProjectContainer.style.opacity = '0';

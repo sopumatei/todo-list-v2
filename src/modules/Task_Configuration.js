@@ -1,4 +1,4 @@
-import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, currentProject, loadTasks} from '../index'
+import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, getCurrentProject, setCurrentProject, loadTasks} from '../index'
 import closeImg from '../img/close.png'
 
 const createTask = (project) => {
@@ -152,7 +152,7 @@ export const taskConfig = () => {
             }
 
             if(check1 && check2 && check3) {
-                createTask(currentProject);
+                createTask(getCurrentProject);
 
                 inputTitle.value = ''; 
                 inputDescription.value = '';

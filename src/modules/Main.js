@@ -4,7 +4,65 @@ import thisWeekUrl from '../img/this_week.png'
 import projectUrl from '../img/to-do-list.png'
 import closeUrl from '../img/close.png' 
 
-import { currentProject, Projects, InboxProject, TodayProject, WeekProject, loadTasks } from '..'
+import { getCurrentProject, setCurrentProject, Project, Projects, InboxProject, TodayProject, WeekProject, loadTasks } from '..'
+
+export const loadProjects = () => {
+    const projectsContainer = document.getElementById('projects-container');
+    projectsContainer.innerHTML = '';
+
+    Projects.forEach((project) => {
+        const projectExample = document.createElement('li');
+        projectExample.classList.add('project');
+
+        const iconContainer = document.createElement('div');
+        iconContainer.classList.add('iconContainer');
+        const projectExampleImg = document.createElement('img');
+        projectExampleImg.src = projectUrl;
+        iconContainer.appendChild(projectExampleImg);
+
+        const projectExampleName = document.createElement('p');
+        projectExampleName.textContent = project.name;
+        iconContainer.appendChild(projectExampleName);
+
+        projectExample.appendChild(iconContainer);
+
+        const deleteProjectBtn = document.createElement('img');
+        deleteProjectBtn.classList.add('deleteBtn');
+        deleteProjectBtn.src = closeUrl;
+        
+        deleteProjectBtn.addEventListener('click', () => {
+            const index = Projects.indexOf(project); // Get the project position
+            if (index > -1) {
+                Projects.splice(index, 1); // Remove the project
+            }
+            loadProjects(); 
+        })
+
+        projectExample.appendChild(deleteProjectBtn);
+
+        projectExample.addEventListener('click', () => {
+            activateProject(project, projectExample);
+            loadTasks(project);
+        });
+
+        projectsContainer.appendChild(projectExample);
+    })
+}
+
+const activateProject = (project, el) => {
+    setCurrentProject(project);
+
+    const projectElements = document.getElementsByClassName('project');
+
+    for(let i = 0; i < projectElements.length; ++i) {
+       /*  if(projectElements[i].classList.contains('active')) {
+            
+        } */
+        projectElements[i].classList.remove('active');
+    }
+
+    el.classList.add('active');
+}
 
 export const loadMain = () => {
     // Creating the main element
@@ -23,20 +81,15 @@ export const loadMain = () => {
 
     const inbox = document.createElement('li');
     inbox.classList.add('active');
+    inbox.classList.add('project');
     inbox.id = 'inbox';
 
     inbox.addEventListener('click', () => {
         if(!inbox.classList.contains('active')) {
-            // currentProject = "Inbox";
-            document.getElementById('project-name').textContent = "Inbox";
+            setCurrentProject(InboxProject);
             document.getElementById('add-task-btn').style.display = 'Block';
-            inbox.classList.add('active');
 
-            const today = document.getElementById('today');
-            today.classList.remove('active');
-
-            const thisWeek = document.getElementById('this-week');
-            thisWeek.classList.remove('active');
+            activateProject(InboxProject, inbox);
 
             // Loading the tasks
             loadTasks(InboxProject);
@@ -53,18 +106,14 @@ export const loadMain = () => {
 
     const today = document.createElement('li');
     today.id = 'today';
+    today.classList.add('project');
 
     today.addEventListener('click', () => {
         if(!today.classList.contains('active')) {
-            // currentProject = "Today";
-            document.getElementById('project-name').textContent = "Today";
+            setCurrentProject(TodayProject);
             document.getElementById('add-task-btn').style.display = 'none';
-            today.classList.add('active');
-
-            inbox.classList.remove('active');
-
-            const thisWeek = document.getElementById('this-week');
-            thisWeek.classList.remove('active');
+            
+            activateProject(TodayProject, today);
 
             // Loading the tasks
             loadTasks(TodayProject);
@@ -81,17 +130,14 @@ export const loadMain = () => {
 
     const thisWeek = document.createElement('li');
     thisWeek.id = 'this-week';
+    thisWeek.classList.add('project');
 
     thisWeek.addEventListener('click', () => {
         if(!thisWeek.classList.contains('active')) {
-            // currentProject = "Week";
-            document.getElementById('project-name').textContent = "This Week";
+            setCurrentProject(WeekProject);
             document.getElementById('add-task-btn').style.display = 'none';
-            thisWeek.classList.add('active');
-
-            today.classList.remove('active');
-
-            inbox.classList.remove('active');
+            
+            activateProject(WeekProject, thisWeek);
 
             // Loading the tasks
             loadTasks(WeekProject);
@@ -121,26 +167,51 @@ export const loadMain = () => {
     projectsContainer.id = 'projects-container'
     projects.appendChild(projectsContainer);
 
-    const projectExample = document.createElement('li');
+    // Loading projects
+    let Gym = new Project("Gym", []);
+    let Home = new Project("Home", []);
+    Projects.push(Gym);
+    Projects.push(Home);
+    console.log(Projects);
 
-    const iconContainer = document.createElement('div');
-    iconContainer.classList.add('iconContainer');
-    const projectExampleImg = document.createElement('img');
-    projectExampleImg.src = projectUrl;
-    iconContainer.appendChild(projectExampleImg);
+    Projects.forEach((project) => {
+        const projectExample = document.createElement('li');
+        projectExample.classList.add('project');
 
-    const projectExampleName = document.createElement('p');
-    projectExampleName.textContent = 'Gym';
-    iconContainer.appendChild(projectExampleName);
+        const iconContainer = document.createElement('div');
+        iconContainer.classList.add('iconContainer');
+        const projectExampleImg = document.createElement('img');
+        projectExampleImg.src = projectUrl;
+        iconContainer.appendChild(projectExampleImg);
 
-    projectExample.appendChild(iconContainer);
+        const projectExampleName = document.createElement('p');
+        projectExampleName.textContent = project.name;
+        iconContainer.appendChild(projectExampleName);
 
-    const deleteProjectBtn = document.createElement('img');
-    deleteProjectBtn.classList.add('deleteBtn');
-    deleteProjectBtn.src = closeUrl;
-    projectExample.appendChild(deleteProjectBtn);
+        projectExample.appendChild(iconContainer);
 
-    projectsContainer.appendChild(projectExample);
+        const deleteProjectBtn = document.createElement('img');
+        deleteProjectBtn.classList.add('deleteBtn');
+        deleteProjectBtn.src = closeUrl;
+
+        deleteProjectBtn.addEventListener('click', () => {
+            const index = Projects.indexOf(project); // Get the project position
+            if (index > -1) {
+                Projects.splice(index, 1); // Remove the project
+            }
+            loadProjects(); 
+        });
+
+        projectExample.appendChild(deleteProjectBtn);
+
+        projectExample.addEventListener('click', () => {
+            setCurrentProject(project);
+            activateProject(project, projectExample);
+            loadTasks(project);
+        });
+
+        projectsContainer.appendChild(projectExample);
+    })
 
     const createProjectBtn = document.createElement('button');
     createProjectBtn.id = 'create-project-btn';
@@ -173,6 +244,8 @@ export const loadMain = () => {
     projectPreview.appendChild(addTaskBtn);
 
     main.appendChild(projectPreview);
+
+    // activateProject();
 
     return main;
 }

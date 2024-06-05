@@ -10,17 +10,6 @@ import { projectConfig } from './modules/Project_Configuration'
 
 import './style.css'
 
-const loadWebsite = () => {
-    document.body.appendChild(loadHeader());
-    document.body.appendChild(loadMain());
-    document.body.appendChild(loadFooter());
-    document.body.appendChild(loadTaskFrame());
-    document.body.appendChild(loadProjectFrame());
-}
-
-loadWebsite();
-activateHeader();
-
 export function Task(title, description, date) {
     this.title = title;
     this.description = description;
@@ -42,18 +31,35 @@ export let InboxProject = new Project("Inbox", []);
 export let TodayProject = new Project("Today", []);
 export let WeekProject = new Project("Week", []);
 export let Projects = [];
-export let currentProject = InboxProject;
+
+let currentProject = null;
+
+export const getCurrentProject = () => currentProject;
+export const setCurrentProject = (project) => {
+    currentProject = project;
+};
+
+const loadWebsite = () => {
+    document.body.appendChild(loadHeader());
+    document.body.appendChild(loadMain());
+    document.body.appendChild(loadFooter());
+    document.body.appendChild(loadTaskFrame());
+    document.body.appendChild(loadProjectFrame());
+}
+
+loadWebsite();
+activateHeader();
 
 taskConfig();
 projectConfig();
 
 export const loadTasks = (project) => {
+    const projectName = document.getElementById('project-name');
+    projectName.textContent = project.name;
     const tasksList = document.getElementById('tasks-list');
     tasksList.innerHTML = '';
-    // console.log(project);
 
     project.tasks.forEach((task) => {
-        // console.log('ADDED TASK: ' + task);
 
         const taskElement = document.createElement('li');
         taskElement.classList.add('task');
