@@ -33,6 +33,13 @@ export const loadProjects = () => {
         deleteProjectBtn.addEventListener('click', () => {
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
+                for(let i  = 0; i < project.tasks.length; ++i) {
+                    const currentTask = project.tasks[i];
+                    InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== currentTask.title);
+                    TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== currentTask.title);
+                    WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== currentTask.title);
+                }
+
                 if(projectExample.classList.contains('active')) {
                     const homeEl = document.getElementById('inbox');
 
@@ -205,6 +212,13 @@ export const loadMain = () => {
         deleteProjectBtn.addEventListener('click', () => {
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
+                for(let i  = 0; i < project.tasks.length; ++i) {
+                    const currentTask = project.tasks[i];
+                    InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== currentTask.title);
+                    TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== currentTask.title);
+                    WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== currentTask.title);
+                }
+
                 if(projectExample.classList.contains('active')) {
                     console.log('deleted an active project');
                     

@@ -76,6 +76,9 @@ export const loadTasks = (project) => {
 
         removeBtn.addEventListener('click', () => {
             project.tasks = project.tasks.filter((task) => task.title !== taskTitle.textContent);
+            if(project != InboxProject) {
+                InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+            }
 
             const todayDate = new Date();
             const compareDate = new Date(task.date);
