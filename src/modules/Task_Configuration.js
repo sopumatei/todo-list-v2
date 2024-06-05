@@ -1,6 +1,71 @@
 import {Task, Project, Projects, InboxProject, TodayProject, WeekProject, currentProject, loadTasks} from '../index'
 import closeImg from '../img/close.png'
 
+const createTask = (project) => {
+    const inputTitle = document.getElementById('input-title');
+    const inputDescription = document.getElementById('input-description');
+    const inputDate = document.getElementById('input-date');
+    const tasksList = document.getElementById('tasks-list');
+    
+    const task = new Task(inputTitle.value, inputDescription.value, inputDate.value);
+
+    // Creating the task element
+    const taskElement = document.createElement('li');
+    taskElement.classList.add('task');
+    
+    const taskHeader = document.createElement('div');
+    taskHeader.classList.add('task-header');
+
+    const taskTitle = document.createElement('h2');
+    taskTitle.textContent = inputTitle.value;
+    taskHeader.appendChild(taskTitle);
+
+    const removeBtn = document.createElement('button');
+    taskHeader.appendChild(removeBtn);
+
+    removeBtn.addEventListener('click', () => {
+        project.tasks = project.tasks.filter((task) => task.title !== taskTitle.textContent);
+
+        const todayDate = new Date();
+        const compareDate = new Date(task.date);
+
+        if(todayDate.setHours(0,0,0,0) == compareDate.setHours(0,0,0,0)) {
+            TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+        }
+
+        if(isDateInThisWeek(compareDate)) {
+            WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+        }
+
+        loadTasks(project);
+    })
+
+    taskElement.appendChild(taskHeader);
+
+    const taskDescription = document.createElement('p');
+    taskDescription.textContent = inputDescription.value;
+    taskElement.appendChild(taskDescription);
+
+    const taskDate = document.createElement('h4');
+    taskDate.textContent = inputDate.value;
+    taskElement.appendChild(taskDate);
+
+    tasksList.appendChild(taskElement);
+
+    project.addTask(task);
+
+    const todayDate = new Date();
+    const compareDate = new Date(inputDate.value);
+
+    if(todayDate.setHours(0,0,0,0) == compareDate.setHours(0,0,0,0)) {
+        TodayProject.addTask(task);
+    }
+
+    if(isDateInThisWeek(compareDate)) {
+        WeekProject.addTask(task);
+    }
+}
+
 export const isDateInThisWeek = (date) => {
     const todayObj = new Date();
     const todayDate = todayObj.getDate();
@@ -26,7 +91,6 @@ export const taskConfig = () => {
     const inputTitle = document.getElementById('input-title');
     const inputDescription = document.getElementById('input-description');
     const inputDate = document.getElementById('input-date');
-    const tasksList = document.getElementById('tasks-list');
 
     addTaskBtn.addEventListener('click', () => {
         addTaskContainer.style.transform = 'scale(1)';
@@ -88,71 +152,7 @@ export const taskConfig = () => {
             }
 
             if(check1 && check2 && check3) {
-                const task = new Task(inputTitle.value, inputDescription.value, inputDate.value);
-                // console.log(task);
-
-                // Creating the task element
-                const taskElement = document.createElement('li');
-                taskElement.classList.add('task');
-                
-                const taskHeader = document.createElement('div');
-                taskHeader.classList.add('task-header');
-
-                const taskTitle = document.createElement('h2');
-                taskTitle.textContent = inputTitle.value;
-                taskHeader.appendChild(taskTitle);
-
-                const removeBtn = document.createElement('button');
-                taskHeader.appendChild(removeBtn);
-
-                removeBtn.addEventListener('click', () => {
-                    if(currentProject === "Inbox") {
-                        InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                        // console.log(InboxProject);
-                        loadTasks(InboxProject);
-                    } else if(currentProject === "Today") {
-                        InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                        TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                        loadTasks(TodayProject);
-                    } else if(currentProject === "Week") {
-                        InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                        WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-                        loadTasks(WeekProject);
-                    } else {
-                        InboxProject.addTask(task);
-                    }
-                })
-
-                taskElement.appendChild(taskHeader);
-
-                const taskDescription = document.createElement('p');
-                taskDescription.textContent = inputDescription.value;
-                taskElement.appendChild(taskDescription);
-
-                const taskDate = document.createElement('h4');
-                taskDate.textContent = inputDate.value;
-                taskElement.appendChild(taskDate);
-
-                tasksList.appendChild(taskElement);
-
-                if(currentProject === "Inbox") {
-                    InboxProject.addTask(task);
-
-                    const todayDate = new Date();
-                    const compareDate = new Date(inputDate.value);
-
-                    if(todayDate.setHours(0,0,0,0) == compareDate.setHours(0,0,0,0)) {
-                        TodayProject.addTask(task);
-                    }
-
-                    if(isDateInThisWeek(compareDate)) {
-                        WeekProject.addTask(task);
-                    }
-
-                    console.log(InboxProject, TodayProject, WeekProject);
-                } else {
-                    InboxProject.addTask(task);
-                }
+                createTask(currentProject);
 
                 inputTitle.value = ''; 
                 inputDescription.value = '';

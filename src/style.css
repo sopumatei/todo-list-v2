@@ -401,6 +401,87 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+/* ADD PROJECT  */
+#add-project-container {
+    z-index: 3;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.2s ease-in-out;
+}
+
+#add-project-frame {
+    z-index: 4;
+    position: absolute;
+    background-color: var(--secondary-light);
+
+    padding: 1rem;
+    border-radius: var(--btn-border-radius);
+
+    width: min(350px, 80vw);
+    min-width: 250px;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+#add-project-title {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5rem;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--btn-border-radius);
+    color: var(--primary-dark);
+}
+
+#project-title {
+    width: 100%;
+    font-size: inherit;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--btn-border-radius);
+    color: var(--primary-dark);
+}
+
+#add-project-btn-container {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-project-btn {
+    font-size: inherit;
+    width: 100%;
+    padding: 0.5rem 0;
+    border: none;
+    border-radius: var(--btn-border-radius);
+    background-color:#fff;
+
+    transition: all 0.2s ease-in-out;
+}
+
+.add-task-btn:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 /* Media queries */
 @media screen and (max-width: 650px) {
     #project-preview {

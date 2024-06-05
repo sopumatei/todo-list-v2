@@ -108,7 +108,7 @@ export const loadMain = () => {
 
     navBar.appendChild(mainCategories);
 
-    // Creating the projects emlements
+    // Creating the projects elements
     const projects = document.createElement('div');
     projects.id = 'projects';
 

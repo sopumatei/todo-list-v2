@@ -5,16 +5,17 @@ import { loadTaskFrame } from './modules/Add_Task_Frame'
 import { activateHeader } from './modules/Header_Manipulator'
 import { taskConfig } from './modules/Task_Configuration'
 import { isDateInThisWeek } from './modules/Task_Configuration'
+import { loadProjectFrame } from './modules/Add_Project_Frame'
+import { projectConfig } from './modules/Project_Configuration'
 
 import './style.css'
-
-export let currentProject = 'Inbox';
 
 const loadWebsite = () => {
     document.body.appendChild(loadHeader());
     document.body.appendChild(loadMain());
     document.body.appendChild(loadFooter());
     document.body.appendChild(loadTaskFrame());
+    document.body.appendChild(loadProjectFrame());
 }
 
 loadWebsite();
@@ -41,8 +42,10 @@ export let InboxProject = new Project("Inbox", []);
 export let TodayProject = new Project("Today", []);
 export let WeekProject = new Project("Week", []);
 export let Projects = [];
+export let currentProject = InboxProject;
 
 taskConfig();
+projectConfig();
 
 export const loadTasks = (project) => {
     const tasksList = document.getElementById('tasks-list');
