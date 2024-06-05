@@ -110,6 +110,16 @@ export const taskConfig = () => {
             addTaskContainer.style.transform = 'scale(0)';
         }, 300);
     }) 
+
+    let canAddTask = (tskName) => {
+        for(let i = 0; i < InboxProject.tasks.length; ++i) {
+            if(InboxProject.tasks[i].title === tskName) {
+                return false;
+            }
+        }
+
+        return true;
+    }
     
     let canClick = true;
     submitBtn.addEventListener('click', () => {
@@ -120,7 +130,16 @@ export const taskConfig = () => {
             let check3 = false;
 
             if(inputTitle.value !== '') {
-                check1 = true;
+                if(canAddTask(inputTitle.value)) {
+                    check1 = true;
+                } else {
+                    inputTitle.value = 'ALREADY EXISTS';
+                    canClick = false;
+                    setTimeout(() => {
+                        canClick = true;
+                        inputTitle.value = '';
+                    }, 500);
+                }
             } else {
                 inputTitle.value = 'MISSING TITLE';
                 canClick = false;
