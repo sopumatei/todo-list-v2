@@ -24,20 +24,13 @@ const createTask = (project) => {
     taskHeader.appendChild(removeBtn);
 
     removeBtn.addEventListener('click', () => {
-        project.tasks = project.tasks.filter((task) => task.title !== taskTitle.textContent);
-        if(project != InboxProject) {
-            InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-        }
+        //console.log("Marime proiecte: " + Projects.length);
+        InboxProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+        TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+        WeekProject.tasks = InboxProject.tasks.filter((task) => task.title !== taskTitle.textContent);
 
-        const todayDate = new Date();
-        const compareDate = new Date(task.date);
-
-        if(todayDate.setHours(0,0,0,0) == compareDate.setHours(0,0,0,0)) {
-            TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== taskTitle.textContent);
-        }
-
-        if(isDateInThisWeek(compareDate)) {
-            WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== taskTitle.textContent);
+        for(let i = 0; i < Projects.length; ++i) {
+            Projects[i].tasks = Projects[i].tasks.filter((task) => task.title !== taskTitle.textContent);
         }
 
         loadTasks(project);
