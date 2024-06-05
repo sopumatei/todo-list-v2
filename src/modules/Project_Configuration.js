@@ -1,5 +1,5 @@
-import { Projects, Project, updateStorage } from "..";
-import { loadProjects } from "./Main";
+import { Projects, Project, updateStorage, loadTasks } from "..";
+import { loadProjects, activateProject } from "./Main";
 
 export const projectConfig = () => {
     const addProjectBtn = document.getElementById('create-project-btn');
@@ -45,10 +45,17 @@ export const projectConfig = () => {
             if(check1) {
                 let newProject = new Project(projectTitle.value, []);
                 Projects.push(newProject);
-                updateStorage();
-                projectTitle.value = ''; 
+                updateStorage(); 
 
                 loadProjects();
+
+                // console.log(document.getElementById(`${projectTitle.value}`));
+                
+                activateProject(newProject, document.getElementById(`${projectTitle.value}`));
+                projectTitle.value = '';
+
+                // Loading the tasks
+                loadTasks(newProject);
 
                 addProjectFrame.style.transform = 'scale(0)';
                 addProjectContainer.style.opacity = '0';

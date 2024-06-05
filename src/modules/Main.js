@@ -13,6 +13,7 @@ export const loadProjects = () => {
     Projects.forEach((project) => {
         const projectExample = document.createElement('li');
         projectExample.classList.add('project');
+        projectExample.id = `${project.name}`
 
         const iconContainer = document.createElement('div');
         iconContainer.classList.add('iconContainer');
@@ -46,7 +47,7 @@ export const loadProjects = () => {
                 if (getCurrentProject() === project) { // Check if the current project is the one being deleted
                     const homeEl = document.getElementById('inbox');
 
-                    console.log(getCurrentProject());
+                    // console.log(getCurrentProject());
 
                     activateProject(InboxProject, homeEl);
                     loadTasks(InboxProject);
@@ -73,7 +74,7 @@ export const loadProjects = () => {
     })
 }
 
-const activateProject = (project, el) => {
+export const activateProject = (project, el) => {
     setCurrentProject(project);
 
     const projectElements = document.getElementsByClassName('project');
