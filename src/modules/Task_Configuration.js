@@ -53,6 +53,9 @@ const createTask = (project) => {
     tasksList.appendChild(taskElement);
 
     project.addTask(task);
+    if(project != InboxProject) {
+        InboxProject.addTask(task);
+    }
 
     const todayDate = new Date();
     const compareDate = new Date(inputDate.value);
@@ -154,6 +157,9 @@ export const taskConfig = () => {
             if(check1 && check2 && check3) {
                 console.log(getCurrentProject());
                 createTask(getCurrentProject());
+                /* if(getCurrentProject() != InboxProject) {
+                    createTask(InboxProject);
+                } */
 
                 inputTitle.value = ''; 
                 inputDescription.value = '';
