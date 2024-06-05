@@ -267,12 +267,49 @@ body {
 }
 
 .task-header button {
+    position: relative;
     width: 35px;
     height: 35px;
 }
 
 .task-header button:hover {
     cursor: pointer;
+}
+
+.task-header button::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    bottom: 40%;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary-dark);
+    transform: rotate(45deg);
+    border-radius: var(--btn-border-radius);
+
+    transition: all 0.2s ease-in-out;
+}
+
+.task-header button::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    bottom: 40%;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary-dark);
+    transform: rotate(-45deg);
+    border-radius: var(--btn-border-radius);
+    
+    transition: all 0.2s ease-in-out;
+}
+
+.task-header button:hover::before {
+    top: 40%;
+}
+
+.task-header button:hover::after {
+    top: 40%;
 }
 
 .task h2 {
@@ -483,7 +520,7 @@ body {
 }
 
 /* Media queries */
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 760px) {
     #project-preview {
         width: 100%;
     }
