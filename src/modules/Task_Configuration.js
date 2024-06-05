@@ -152,7 +152,8 @@ export const taskConfig = () => {
             }
 
             if(check1 && check2 && check3) {
-                createTask(getCurrentProject);
+                console.log(getCurrentProject());
+                createTask(getCurrentProject());
 
                 inputTitle.value = ''; 
                 inputDescription.value = '';

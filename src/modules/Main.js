@@ -33,6 +33,13 @@ export const loadProjects = () => {
         deleteProjectBtn.addEventListener('click', () => {
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
+                if(projectExample.classList.contains('active')) {
+                    const homeEl = document.getElementById('inbox');
+
+                    setCurrentProject(InboxProject);
+                    loadTasks(InboxProject);
+                    activateProject(InboxProject, homeEl);
+                }
                 Projects.splice(index, 1); // Remove the project
             }
             loadProjects(); 
@@ -41,6 +48,7 @@ export const loadProjects = () => {
         projectExample.appendChild(deleteProjectBtn);
 
         projectExample.addEventListener('click', () => {
+            document.getElementById('add-task-btn').style.display = 'Block';
             activateProject(project, projectExample);
             loadTasks(project);
         });
@@ -55,10 +63,9 @@ const activateProject = (project, el) => {
     const projectElements = document.getElementsByClassName('project');
 
     for(let i = 0; i < projectElements.length; ++i) {
-       /*  if(projectElements[i].classList.contains('active')) {
-            
-        } */
-        projectElements[i].classList.remove('active');
+       if(projectElements[i].classList.contains('active')) {
+            projectElements[i].classList.remove('active');
+        }
     }
 
     el.classList.add('active');
@@ -80,6 +87,7 @@ export const loadMain = () => {
     mainCategories.id = 'main-categories'
 
     const inbox = document.createElement('li');
+    setCurrentProject(InboxProject);
     inbox.classList.add('active');
     inbox.classList.add('project');
     inbox.id = 'inbox';
@@ -197,6 +205,15 @@ export const loadMain = () => {
         deleteProjectBtn.addEventListener('click', () => {
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
+                if(projectExample.classList.contains('active')) {
+                    console.log('deleted an active project');
+                    
+                    const homeEl = document.getElementById('inbox');
+
+                    setCurrentProject(InboxProject);
+                    loadTasks(InboxProject);
+                    activateProject(InboxProject, homeEl);
+                }
                 Projects.splice(index, 1); // Remove the project
             }
             loadProjects(); 
@@ -205,6 +222,7 @@ export const loadMain = () => {
         projectExample.appendChild(deleteProjectBtn);
 
         projectExample.addEventListener('click', () => {
+            document.getElementById('add-task-btn').style.display = 'Block';
             setCurrentProject(project);
             activateProject(project, projectExample);
             loadTasks(project);
