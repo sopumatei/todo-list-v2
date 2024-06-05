@@ -30,7 +30,9 @@ export const loadProjects = () => {
         deleteProjectBtn.classList.add('deleteBtn');
         deleteProjectBtn.src = closeUrl;
         
+        let canDelete = false;
         deleteProjectBtn.addEventListener('click', () => {
+            canDelete = true;
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
                 for(let i  = 0; i < project.tasks.length; ++i) {
@@ -39,25 +41,30 @@ export const loadProjects = () => {
                     TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== currentTask.title);
                     WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== currentTask.title);
                 }
-
-                if(projectExample.classList.contains('active')) {
+                
+                if (getCurrentProject() === project) { // Check if the current project is the one being deleted
                     const homeEl = document.getElementById('inbox');
 
-                    setCurrentProject(InboxProject);
-                    loadTasks(InboxProject);
+                    console.log(getCurrentProject());
+
                     activateProject(InboxProject, homeEl);
+                    loadTasks(InboxProject);
                 }
+
                 Projects.splice(index, 1); // Remove the project
             }
+
             loadProjects(); 
-        })
+        });
 
         projectExample.appendChild(deleteProjectBtn);
 
         projectExample.addEventListener('click', () => {
-            document.getElementById('add-task-btn').style.display = 'Block';
-            activateProject(project, projectExample);
-            loadTasks(project);
+            if(!canDelete) {
+                document.getElementById('add-task-btn').style.display = 'Block';
+                activateProject(project, projectExample);
+                loadTasks(project);
+            }
         });
 
         projectsContainer.appendChild(projectExample);
@@ -209,7 +216,9 @@ export const loadMain = () => {
         deleteProjectBtn.classList.add('deleteBtn');
         deleteProjectBtn.src = closeUrl;
 
+        let canDelete = false;
         deleteProjectBtn.addEventListener('click', () => {
+            canDelete = true;
             const index = Projects.indexOf(project); // Get the project position
             if (index > -1) {
                 for(let i  = 0; i < project.tasks.length; ++i) {
@@ -218,15 +227,14 @@ export const loadMain = () => {
                     TodayProject.tasks = TodayProject.tasks.filter((task) => task.title !== currentTask.title);
                     WeekProject.tasks = WeekProject.tasks.filter((task) => task.title !== currentTask.title);
                 }
-
-                if(projectExample.classList.contains('active')) {
-                    console.log('deleted an active project');
-                    
+                
+                if (getCurrentProject() === project) { // Check if the current project is the one being deleted
                     const homeEl = document.getElementById('inbox');
 
-                    setCurrentProject(InboxProject);
-                    loadTasks(InboxProject);
+                    console.log(getCurrentProject());
+
                     activateProject(InboxProject, homeEl);
+                    loadTasks(InboxProject);
                 }
                 Projects.splice(index, 1); // Remove the project
             }
@@ -236,10 +244,11 @@ export const loadMain = () => {
         projectExample.appendChild(deleteProjectBtn);
 
         projectExample.addEventListener('click', () => {
-            document.getElementById('add-task-btn').style.display = 'Block';
-            setCurrentProject(project);
-            activateProject(project, projectExample);
-            loadTasks(project);
+            if(!canDelete) {
+                document.getElementById('add-task-btn').style.display = 'Block';
+                activateProject(project, projectExample);
+                loadTasks(project);
+            }
         });
 
         projectsContainer.appendChild(projectExample);
