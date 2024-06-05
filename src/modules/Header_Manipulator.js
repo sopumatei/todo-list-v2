@@ -10,7 +10,7 @@ export const activateHeader = () => {
         }
         else {
             menuBtn.classList.add('active');
-            mainNav.style.height = '100%';
+            mainNav.style.height = '400px';
             mainNav.style.transform = 'scale(1)';
         }
     })
