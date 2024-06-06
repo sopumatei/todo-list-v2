@@ -49,7 +49,7 @@ const createTask = (project) => {
 
     tasksList.appendChild(taskElement);
 
-    project.addTask(task);
+    project.tasks.push(task);
     if(project != InboxProject) {
         InboxProject.addTask(task);
     }

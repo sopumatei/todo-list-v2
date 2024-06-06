@@ -55,6 +55,7 @@ const loadStorage = () => {
 
     if(localStorage.getItem('Week')) {
         Projects = JSON.parse(localStorage.getItem('Projects'));
+        console.log(Projects);
     }
 }
 
