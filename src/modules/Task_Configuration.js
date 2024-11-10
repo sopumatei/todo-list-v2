@@ -1,3 +1,4 @@
+// Importing classes, modules, and functions for task and project management
 import {
   Task,
   Project,
@@ -10,24 +11,30 @@ import {
   loadTasks,
   updateStorage,
 } from "../index";
+
+// Importing image for the close button
 import closeImg from "../img/close.png";
 
+// Function to create a task and add it to a specific project
 const createTask = (project) => {
+  // Getting input elements and task list container from the DOM
   const inputTitle = document.getElementById("input-title");
   const inputDescription = document.getElementById("input-description");
   const inputDate = document.getElementById("input-date");
   const tasksList = document.getElementById("tasks-list");
 
+  // Create a new Task instance with user-provided values
   const task = new Task(
     inputTitle.value,
     inputDescription.value,
     inputDate.value
   );
 
-  // Creating the task element
+  // Creating the task element in the UI
   const taskElement = document.createElement("li");
   taskElement.classList.add("task");
 
+  // Creating the task header with title and remove button
   const taskHeader = document.createElement("div");
   taskHeader.classList.add("task-header");
 
@@ -35,11 +42,12 @@ const createTask = (project) => {
   taskTitle.textContent = inputTitle.value;
   taskHeader.appendChild(taskTitle);
 
+  // Remove button setup for deleting a task
   const removeBtn = document.createElement("button");
   taskHeader.appendChild(removeBtn);
 
   removeBtn.addEventListener("click", () => {
-    //console.log("Marime proiecte: " + Projects.length);
+    // Remove the task from all relevant projects (Inbox, Today, Week)
     InboxProject.tasks = InboxProject.tasks.filter(
       (task) => task.title !== taskTitle.textContent
     );
@@ -50,18 +58,21 @@ const createTask = (project) => {
       (task) => task.title !== taskTitle.textContent
     );
 
-    for (let i = 0; i < Projects.length; ++i) {
-      Projects[i].tasks = Projects[i].tasks.filter(
+    // Remove the task from all projects in the Projects array
+    Projects.forEach((proj) => {
+      proj.tasks = proj.tasks.filter(
         (task) => task.title !== taskTitle.textContent
       );
-    }
+    });
 
+    // Update local storage and reload tasks in the UI
     updateStorage();
     loadTasks(project);
   });
 
   taskElement.appendChild(taskHeader);
 
+  // Adding description and date elements to the task
   const taskDescription = document.createElement("p");
   taskDescription.textContent = inputDescription.value;
   taskElement.appendChild(taskDescription);
@@ -70,42 +81,46 @@ const createTask = (project) => {
   taskDate.textContent = inputDate.value;
   taskElement.appendChild(taskDate);
 
-  tasksList.appendChild(taskElement);
+  tasksList.appendChild(taskElement); // Append task to the task list
 
+  // Add the task to the current project and potentially to other projects
   project.tasks.push(task);
   if (project != InboxProject) {
     InboxProject.addTask(task);
   }
 
+  // Check if task date matches Today or This Week, and add it accordingly
   const todayDate = new Date();
   const compareDate = new Date(inputDate.value);
 
-  if (todayDate.setHours(0, 0, 0, 0) == compareDate.setHours(0, 0, 0, 0)) {
+  if (todayDate.setHours(0, 0, 0, 0) === compareDate.setHours(0, 0, 0, 0)) {
     TodayProject.addTask(task);
   }
 
   if (isDateInThisWeek(compareDate)) {
     WeekProject.addTask(task);
   }
-  updateStorage();
+  updateStorage(); // Update local storage after task creation
 };
 
+// Helper function to check if a date is in the current week
 export const isDateInThisWeek = (date) => {
   const todayObj = new Date();
   const todayDate = todayObj.getDate();
   const todayDay = todayObj.getDay();
 
-  // get first date of week
+  // Get the first day of the current week
   const firstDayOfWeek = new Date(todayObj.setDate(todayDate - todayDay));
 
-  // get last date of week
+  // Get the last day of the current week
   const lastDayOfWeek = new Date(firstDayOfWeek);
   lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
 
-  // if date is equal or within the first and last dates of the week
+  // Return true if the date falls within the week
   return date >= firstDayOfWeek && date <= lastDayOfWeek;
 };
 
+// Configures the add-task functionality and handles task form interactions
 export const taskConfig = () => {
   const addTaskBtn = document.getElementById("add-task-btn");
   const submitBtn = document.getElementById("submit-btn");
@@ -116,12 +131,14 @@ export const taskConfig = () => {
   const inputDescription = document.getElementById("input-description");
   const inputDate = document.getElementById("input-date");
 
+  // Show the task creation frame when the add task button is clicked
   addTaskBtn.addEventListener("click", () => {
     addTaskContainer.style.transform = "scale(1)";
     addTaskFrame.style.transform = "scale(1)";
     addTaskContainer.style.opacity = "1";
   });
 
+  // Hide and reset the task creation form when the cancel button is clicked
   cancelBtn.addEventListener("click", () => {
     inputTitle.value = "";
     inputDescription.value = "";
@@ -134,25 +151,23 @@ export const taskConfig = () => {
     }, 300);
   });
 
+  // Function to check if a task with the same title already exists in the Inbox
   let canAddTask = (tskName) => {
-    for (let i = 0; i < InboxProject.tasks.length; ++i) {
-      if (InboxProject.tasks[i].title.toLowerCase() === tskName.toLowerCase()) {
-        return false;
-      }
-    }
-
-    return true;
+    return !InboxProject.tasks.some(
+      (task) => task.title.toLowerCase() === tskName.toLowerCase()
+    );
   };
 
-  let canClick = true;
+  let canClick = true; // Prevents multiple submissions
   submitBtn.addEventListener("click", () => {
     if (canClick) {
-      // Checking the form
+      // Validating form fields
       let check1 = false;
       let check2 = false;
       let check3 = false;
       let check4 = false;
 
+      // Title field validation
       if (inputTitle.value !== "") {
         if (canAddTask(inputTitle.value)) {
           check1 = true;
@@ -173,6 +188,7 @@ export const taskConfig = () => {
         }, 500);
       }
 
+      // Description field validation
       if (inputDescription.value !== "") {
         check2 = true;
       } else {
@@ -184,6 +200,7 @@ export const taskConfig = () => {
         }, 500);
       }
 
+      // Date field validation
       if (inputDate.value !== "") {
         check3 = true;
       } else {
@@ -195,16 +212,14 @@ export const taskConfig = () => {
         }, 500);
       }
 
+      // Checking if the date is valid and in the future
       const currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0);
       const selectedDate = new Date(inputDate.value);
 
-      console.log(selectedDate, currentDate);
-
       if (selectedDate >= currentDate) {
         check4 = true;
       } else {
-        console.log("this date already passed");
         inputDate.style.color = "tomato";
         canClick = false;
         setTimeout(() => {
@@ -213,12 +228,9 @@ export const taskConfig = () => {
         }, 500);
       }
 
+      // Create task if all checks pass
       if (check1 && check2 && check3 && check4) {
-        console.log(getCurrentProject());
         createTask(getCurrentProject());
-        /* if(getCurrentProject() != InboxProject) {
-                    createTask(InboxProject);
-                } */
 
         inputTitle.value = "";
         inputDescription.value = "";
